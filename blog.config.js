@@ -66,7 +66,7 @@ const BLOG = {
     'Hi，我是一个探索者, Hi，我是一个旅行者,Hi，我是一个书记员,欢迎来到我的博客🎉',
 
  // 微软 Clarity 站点分析
-  CLARITY_ID: process.env.NEXT_PUBLIC_CLARITY_ID || 'wen3i0uqgh', // 只需要复制Clarity脚本中的ID部分，ID是一个十位的英文数字组合
+  CLARITY_ID: process.env.NEXT_PUBLIC_CLARITY_ID || wen3i0uqgh, // 只需要复制Clarity脚本中的ID部分，ID是一个十位的英文数字组合
 
   // uuid重定向至 slug
   UUID_REDIRECT: process.env.UUID_REDIRECT || false
