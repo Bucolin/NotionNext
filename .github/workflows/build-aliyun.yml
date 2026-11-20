@@ -1,0 +1,71 @@
+name: Build NotionNext for Aliyun
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout original version
+        uses: actions/checkout@v4
+        with:
+          ref: c60ef379d3ff399f0503f19278a3359402ddf1fc
+
+      - name: Prepare Docker files
+        run: |
+          cat >> .dockerignore <<'EOF'
+          .git
+          node_modules
+          .env
+          .env.*
+          .npmrc
+          .vercel
+          *.pem
+          *.key
+          EOF
+
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("Dockerfile")
+          s = p.read_text()
+          old = "FROM base AS builder\nARG NOTION_PAGE_ID\n"
+          new = (
+              "FROM base AS builder\n"
+              "ARG NOTION_PAGE_ID\n"
+              "ARG NEXT_PUBLIC_COMMENT_ENV_ID\n"
+              "ARG NEXT_PUBLIC_MUSIC_PLAYER\n"
+              "ARG NEXT_PUBLIC_CLARITY_ID\n"
+          )
+          if old not in s:
+              raise SystemExit("Dockerfile structure mismatch")
+          p.write_text(s.replace(old, new, 1))
+          PY
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/bucolin/notionnext:aliyun
+          build-args: |
+            NOTION_PAGE_ID=${{ 02ab3b8678004aa69e9e415905ef32a5,en:7c1d570661754c8fbc568e00a01fd70e }}
+            NEXT_PUBLIC_COMMENT_ENV_ID=${{ https://twikoo-teal-three-56.vercel.app/ }}
+            NEXT_PUBLIC_MUSIC_PLAYER=${{ https://cdn.jsdelivr.net/npm/aplayer@1.10.0/dist/APlayer.min.js
+ }}
+            NEXT_PUBLIC_CLARITY_ID=${{ wen3i0uqgh
