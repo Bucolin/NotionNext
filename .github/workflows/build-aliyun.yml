@@ -66,6 +66,5 @@ jobs:
           build-args: |
             NOTION_PAGE_ID=${{ 02ab3b8678004aa69e9e415905ef32a5,en:7c1d570661754c8fbc568e00a01fd70e }}
             NEXT_PUBLIC_COMMENT_ENV_ID=${{ https://twikoo-teal-three-56.vercel.app/ }}
-            NEXT_PUBLIC_MUSIC_PLAYER=${{ https://cdn.jsdelivr.net/npm/aplayer@1.10.0/dist/APlayer.min.js
- }}
+            NEXT_PUBLIC_MUSIC_PLAYER=${{ https://cdn.jsdelivr.net/npm/aplayer@1.10.0/dist/APlayer.min.js }}
             NEXT_PUBLIC_CLARITY_ID=${{ wen3i0uqgh
